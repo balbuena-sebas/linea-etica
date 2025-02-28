@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Línea Ética de Beer Tan</title>
+    <link rel="stylesheet" href="./css/style-index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="./html/admin.html">Acceso Autorizado</a></li>
+        </ul>
+    </nav>
+    <img class="nav__icono-beertan" src="./img/icon-day.jpg" alt="icono_beer tan">
+    <div id="reporte">
+        <h2>Realiza un Reporte Anónimo</h2>
+        <form id="reportForm">
+            <label for="tipo">Tipo de Reporte:</label>
+            <select id="tipo" required>
+                <option value="Sugerencia">Sugerencia</option>
+                <option value="Queja">Queja</option>
+                <option value="Denuncia">Denuncia</option>
+            </select>
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" required></textarea>
+            <button type="submit">Enviar Reporte</button>
+        </form>
+    </div>
+
+    <footer class="pie-pagina">
+        &copy;2025 Derechos reservados Beer Tan.
+    </footer>
+
+    <script src="./js/index_script.js"></script>
+</body>
+</html>
