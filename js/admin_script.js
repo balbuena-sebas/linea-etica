@@ -39,7 +39,7 @@ function descargarExcel() {
 
 function borrarReportes() {
     let clave = prompt('Ingrese la contraseña para borrar todos los reportes:');
-    if (clave === 'admin123') {
+    if (clave === 'admin1234') {
         localStorage.removeItem('reportes');
         alert('Historial de reportes eliminado.');
         mostrarReportes();
@@ -50,7 +50,7 @@ function borrarReportes() {
 
 function borrarReporte(index) {
     let clave = prompt('Ingrese la contraseña para eliminar este reporte:');
-    if (clave === 'admin123') {
+    if (clave === 'admin1234') {
         let reportes = obtenerReportes();
         reportes.splice(index, 1);
         localStorage.setItem('reportes', JSON.stringify(reportes));
