@@ -1,5 +1,5 @@
 // URL RAW de tu Gist con los reportes
-const GIST_URL = "https://gist.github.com/balbuena-sebas/12fb8ffbef52c9fab6b83e50d7c1b6db.json";
+const GIST_URL = "https://gist.github.com/balbuena-sebas/12fb8ffbef52c9fab6b83e50d7c1b6db.js";
 
 // Función para obtener reportes desde GitHub Gist
 async function obtenerReportes() {
