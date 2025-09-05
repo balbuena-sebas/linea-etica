@@ -46,4 +46,5 @@ jspm_packages/
 # Supabase specific
 .supabase
 
-*server.js
+
+*package-lock.json
