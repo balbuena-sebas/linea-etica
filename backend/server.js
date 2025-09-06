@@ -1,14 +1,25 @@
 const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid'); // ← UUID agregado aquí
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; // ← Cambiado a 10000 para Render
+
+// ✅ Configurar CORS para permitir Netlify y otros dominios
+const corsOptions = {
+  origin: [
+    'http://localhost:8000', // Desarrollo local
+    'https://beertanlineaetica.netlify.app', // Tu dominio de Netlify
+    'https://beertan-api.onrender.com' // Tu propio backend
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions)); // ← ¡CORS CONFIGURADO!
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Configurar Supabase
@@ -128,5 +139,6 @@ app.listen(PORT, () => {
   console.log('🚀 Servidor corriendo en http://localhost:' + PORT);
   console.log('===================================');
   console.log('📋 UUID habilitado para IDs seguros');
+  console.log('🌐 CORS configurado para Netlify');
   console.log('===================================');
 });
