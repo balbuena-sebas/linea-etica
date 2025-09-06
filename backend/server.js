@@ -190,11 +190,27 @@ app.delete('/api/reports/:id', async (req, res) => {
   }
 });
 
+// Ruta raíz para verificar que el servidor funciona
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Beer Tan API funcionando correctamente',
+    status: 'OK',
+    endpoints: [
+      'GET /api/health - Estado del servidor',
+      'GET /api/debug - Información de debug',
+      'GET /api/reports - Obtener reportes',
+      'POST /api/reports - Crear reporte',
+      'DELETE /api/reports/:id - Eliminar reporte'
+    ],
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Manejo de rutas no encontradas
 app.use('*', (req, res) => {
   res.status(404).json({ 
     error: 'Ruta no encontrada',
-    availableRoutes: ['/api/health', '/api/debug', '/api/reports']
+    availableRoutes: ['/', '/api/health', '/api/debug', '/api/reports']
   });
 });
 
