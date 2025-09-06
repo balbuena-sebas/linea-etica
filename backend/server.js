@@ -5,19 +5,31 @@ const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 10000; // ← Cambiado a 10000 para Render
+const PORT = process.env.PORT || 10000; // Compatible con Render
 
-// ✅ Configurar CORS para permitir Netlify y otros dominios
+// ✅ CORS dinámico: permite localhost y cualquier dominio *.netlify.app
 const corsOptions = {
-  origin: [
-    'http://localhost:8000', // Desarrollo local
-    'https://beertanlineaetica.netlify.app', // Tu dominio de Netlify
-    'https://beertan-api.onrender.com' // Tu propio backend
-  ],
+  origin: (origin, callback) => {
+    // Permitir peticiones sin origen (Postman, curl)
+    if (!origin) return callback(null, true);
+
+    if (
+      origin.includes("localhost") ||         // Desarrollo local
+      origin.includes("netlify.app") ||       // Cualquier deploy de Netlify
+      origin === "https://beertan-api.onrender.com" // Tu backend (para auto-consumo)
+    ) {
+      callback(null, true);
+    } else {
+      console.warn("🚫 CORS bloqueado para origen:", origin);
+      callback(new Error("CORS no permitido"));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
-app.use(cors(corsOptions)); // ← ¡CORS CONFIGURADO!
+
+app.use(cors(corsOptions));
+
 
 // Middleware
 app.use(express.json());
@@ -37,7 +49,7 @@ app.get('/api/debug', (req, res) => {
   res.json({
     routes: [
       'GET /api/health',
-      'GET /api/reports', 
+      'GET /api/reports',
       'POST /api/reports',
       'DELETE /api/reports/:id'
     ],
@@ -65,7 +77,7 @@ app.get('/api/reports', async (req, res) => {
       console.error('Error de Supabase:', error);
       return res.status(500).json({ error: error.message });
     }
-    
+
     console.log('Reportes obtenidos:', data.length);
     res.json(data);
   } catch (error) {
@@ -74,18 +86,19 @@ app.get('/api/reports', async (req, res) => {
   }
 });
 
-// ✅ RUTA PARA CREAR REPORTE (POST) - CON UUID
+// ✅ RUTA PARA CREAR REPORTE (POST) - CON UUID Y FECHA
 app.post('/api/reports', async (req, res) => {
   try {
     console.log('Creando reporte:', req.body);
     const { tipo, mensaje } = req.body;
-    
+
     const reporteData = {
-      id: uuidv4(), // ← ID aleatorio UUID
+      id: uuidv4(),
       tipo,
-      mensaje
+      mensaje,
+      fecha: new Date().toISOString() // 🔑 AÑADIDO: fecha para evitar "Invalid Date"
     };
-    
+
     const { data, error } = await supabase
       .from('reportes')
       .insert([reporteData]);
@@ -94,7 +107,7 @@ app.post('/api/reports', async (req, res) => {
       console.error('Error de Supabase:', error);
       return res.status(500).json({ error: error.message });
     }
-    
+
     console.log('Reporte creado con ID:', reporteData.id);
     res.json({ message: 'Reporte guardado exitosamente', data });
   } catch (error) {
@@ -108,7 +121,7 @@ app.delete('/api/reports/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log('Eliminando reporte ID:', id);
-    
+
     const { error } = await supabase
       .from('reportes')
       .delete()
@@ -118,7 +131,7 @@ app.delete('/api/reports/:id', async (req, res) => {
       console.error('Error de Supabase:', error);
       return res.status(500).json({ error: error.message });
     }
-    
+
     console.log('Reporte eliminado');
     res.json({ message: 'Reporte eliminado exitosamente' });
   } catch (error) {
