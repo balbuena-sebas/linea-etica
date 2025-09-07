@@ -58,7 +58,7 @@ async function mostrarReportes() {
 
 async function borrarReportes() {
   let clave = prompt("Ingrese la contraseña para borrar todos los reportes:");
-  if (clave === "admin1234") {
+  if (clave === "borrar") {
     try {
       const res = await fetch(`${API_BASE_URL}/api/reports`);
       if (!res.ok) throw new Error(`Error ${res.status} al obtener reportes`);
@@ -80,7 +80,7 @@ async function borrarReportes() {
 
 function verificarAcceso() {
   let clave = document.getElementById("password").value;
-  if (clave === "beertan2050") {
+  if (clave === "tengoacceso2025") {
     document.getElementById("adminPanel").classList.remove("hidden");
     mostrarReportes();
   } else {
