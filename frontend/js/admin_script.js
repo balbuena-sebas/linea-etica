@@ -80,7 +80,7 @@ async function borrarReportes() {
 
 function verificarAcceso() {
   let clave = document.getElementById("password").value;
-  if (clave === "admin1234") {
+  if (clave === "beertan2050") {
     document.getElementById("adminPanel").classList.remove("hidden");
     mostrarReportes();
   } else {
