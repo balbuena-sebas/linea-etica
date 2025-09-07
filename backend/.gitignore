@@ -45,4 +45,4 @@ jspm_packages/
 
 # Supabase specific
 .supabase
-*package-lock.json
+
